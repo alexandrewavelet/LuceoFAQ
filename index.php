@@ -1,13 +1,15 @@
 <!doctype html>
 <html lang="fr">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
-	<title>Titre</title>
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Title</title>
+	<link rel="stylesheet" href="assets/css/normalize.css" />
+	<link rel="stylesheet" href="assets/css/foundation.min.css" />
 	<link rel="stylesheet" href="assets/css/style.css">
-	<script type="text/javascript" src="assets/js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/vendor/modernizr.js"></script>
+	<script src="assets/js/vendor/jquery.js"></script>
+	<script src="assets/js/vendor/foundation.min.js"></script>
 </head>
 <body>
 
