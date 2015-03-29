@@ -1,8 +1,9 @@
 <?php
+
 	class ConnexionBDD{
-	
+
 		protected $connexion;
-		
+
 		function __construct(){
 			$dsn = "mysql:host=localhost;dbname=nombdd";
 			$user = "root";
@@ -18,4 +19,3 @@
 			return $this->connexion;
 		}
 	}
-?>
