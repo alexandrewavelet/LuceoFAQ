@@ -22,7 +22,7 @@
 		function __construct($id, $label)
 		{
 			$this->id = $id;
-			$label = (!is_array($label)) ?  array('En' => $label) : $label ;
+			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
 			$this->label = $label;
 
 			return $this;
@@ -53,13 +53,23 @@
 		}
 
 		/**
-		 * Gets the label (En and Fr).
+		 * Get the labels in all languages
+		 * @return array Labels
+		 */
+		public function getLabelArray()
+		{
+			return $this->label;
+		}
+
+		/**
+		 * Gets the label in the language asked. English by default
 		 *
 		 * @return array
 		 */
-		public function getLabel()
+		public function getLabel($lang = 'en_EN')
 		{
-			return $this->label;
+			$label = (array_key_exists($lang, $this->getLabelArray())) ? $this->label[$lang] : $this->label['en_EN'] ;
+			return $label;
 		}
 
 		/**
@@ -69,10 +79,20 @@
 		 *
 		 * @return self
 		 */
-		public function setLabel(array $label)
+		public function setLabelArray(array $label)
 		{
 			$this->label = $label;
 
 			return $this;
+		}
+
+		/**
+		 * Set a label for a specific language. English by default
+		 * @param string $value Name of the label
+		 * @param string $lang  Language of the label
+		 */
+		public function setLabel($value, $lang = 'en_EN')
+		{
+			$this->label[$lang] = $value;
 		}
 	}

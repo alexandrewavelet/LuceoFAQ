@@ -171,4 +171,61 @@
 
 			return $this;
 		}
+
+		/**
+		 * Check if a question is tagged with $tag
+		 * @param  Tag     $tag Tag to be tested
+		 * @return boolean      true if yes, else false
+		 */
+		public function isTagged(Tag $tag)
+		{
+			return in_array($tag->getId(), $this->getTags());
+		}
+
+		/**
+		 * Add tags to a question by their ids
+		 * @param array $tags array of tag ids to be added
+		 */
+		public function addTagsIds(array $tags)
+		{
+			$this->setTags(array_merge($this->getTags(), $tags));
+		}
+
+		/**
+		 * Add tags to a question
+		 * @param array $tags Array of Tag objects
+		 */
+		public function addTags(array $tags){
+			$tagsToAdd = array();
+
+			foreach ($tags as $tag) {
+				if ($tag instanceof Tag && !$this->isTagged($tag)) {
+					array_push($tagsToAdd, $tag->getId());
+				}
+			}
+
+			$this->addTagsIds($tagsToAdd);
+		}
+
+		/**
+		 * Delete a tag from the question
+		 * @param  Tag    $tag Tag object to be deleted
+		 */
+		public function deleteTag(Tag $tag)
+		{
+			if ($this->isTagged($tag)) {
+				$this->setTags(array_diff($this->getTags(), array($tag->getId())));
+			}
+		}
+
+		/**
+		 * Delete several tags from the question
+		 * @param  array  $tags Array of Tag objects to be deleted
+		 */
+		public function deleteTags(array $tags)
+		{
+			foreach ($tags as $tag) {
+				$this->deleteTag($tag);
+			}
+		}
 }
