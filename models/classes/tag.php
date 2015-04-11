@@ -19,11 +19,19 @@
 		 */
 		protected $label;
 
-		function __construct($id, $label)
+		/**
+		 * number of questions having this tag
+		 *
+		 * @var int
+		 */
+		protected $numberOfQuestions;
+
+		function __construct($id, $label, $numberOfQuestions = 0)
 		{
 			$this->id = $id;
 			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
 			$this->label = $label;
+			$this->numberOfQuestions = $numberOfQuestions;
 
 			return $this;
 		}
@@ -95,4 +103,28 @@
 		{
 			$this->label[$lang] = $value;
 		}
-	}
+
+		/**
+		* Gets the number of questions having this tag.
+		*
+		* @return int
+		*/
+		public function getNumberOfQuestions()
+		{
+			return $this->numberOfQuestions;
+		}
+
+		/**
+		* Sets the number of questions having this tag.
+		*
+		* @param int $numberOfQuestions the number of questions
+		*
+		* @return self
+		*/
+		public function setNumberOfQuestions($numberOfQuestions)
+		{
+			$this->numberOfQuestions = $numberOfQuestions;
+
+			return $this;
+		}
+}
