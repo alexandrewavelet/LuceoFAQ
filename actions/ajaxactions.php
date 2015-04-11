@@ -1,39 +1,109 @@
 <?php
 
-	// Actions called via AJAX
-	// Transform to a class with one public static method (and the rest in privates) later
-
 	include_once('/models/autoload.php');
 
-	if(isset($_POST['ajax_request'])) {
-		$class = $_POST['className'];
-		if (class_exists($class)) {
-			$method = $_POST['methodName'];
+	/**
+	* Class which handle AJAX calls for the application
+	*/
+	class AjaxActions
+	{
 
-			if (method_exists($class, $method)) {
-				// Get the methods param here - EXPERIMENTAL : Need testing
-				$params = json_decode($_POST['params'], true);
-				array_push($params, true); // Adding true forces the method to return an array
+		/**
+		 * Class from which the method will be called
+		 * @var string
+		 */
+		protected $class;
 
-				$aReturn = call_user_func_array($class.'::'.$method, $params);
-			}else{
-				$aReturn = array(
-					'error' => true,
-					'message' => 'The method "'.$method.'" doesn\'t exist for the '.$class.' class.';
-				);
-			}
-		}else{
-			$aReturn = array(
-				'error' => true,
-				'message' => 'The class "'.$class.'" doesn\'t exist.';
-			);
+		/**
+		 * Method to call
+		 * @var string
+		 */
+		protected $method;
+
+		/**
+		 * List of parameters to pass to the method
+		 * @var array
+		 */
+		protected $params;
+
+		function __construct($class = '', $method = '', $params = array())
+		{
+			$this->class = $class;
+			$this->method = $method;
+			$this->params = json_decode($params, true);
 		}
-	}else{
-		$aReturn = array(
-			'error' => true,
-			'message' => 'The AJAX request is not valid.';
-		);
+
+		/**
+		 * Run the method affected to the AjaxAction object : Splitted in steps to ensure the method can be called, then execute it
+		 * @return json return of the method or error message
+		 */
+		public function perform()
+		{
+			if (!$this->class == '' && !$this->method == '') {
+				return $this->ValidateClassStep();
+			} else {
+				$response = array(
+					'error' => true,
+					'message' => 'Either the class or the method is not specified.'
+				);
+				return json_encode($response);
+			}
+		}
+
+		/**
+		 * First step of perform() : verify if the class exists
+		 * @return json return of the method or error message
+		 */
+		private function validateClassStep()
+		{
+			if (class_exists($this->class)) {
+				return $this->validateMethodStep();
+			}else{
+				$response = array(
+					'error' => true,
+					'message' => 'The class "'.$this->class.'" doesn\'t exist.'
+				);
+				return json_encode($response);
+			}
+		}
+
+		/**
+		 * Second step of perform() : Verify if the method exists in the class
+		 * @return json return of the method or error message
+		 */
+		private function validateMethodStep()
+		{
+			if (method_exists($this->class, $this->method)) {
+				return $this->executeStep();
+			}else{
+				$response = array(
+					'error' => true,
+					'message' => 'The method "'.$this->method.'" doesn\'t exist for the '.$this->class.' class.'
+				);
+				return json_encode($response);
+			}
+		}
+
+		/**
+		 * Third step of perform() : Executes the method
+		 * @return json return of the method or error message
+		 */
+		private function executeStep()
+		{
+			array_push($this->params, true); // Adding true forces the method to return an array
+			$response = call_user_func_array($this->class.'::'.$this->method, $this->params);
+			if ($response) {
+				return json_encode($response);
+			}else{
+				$response = array(
+					'error' => true,
+					'message' => 'Something happened while trying to execute the method '.$this->class.'::'.$this->method
+				);
+				return json_encode($response);
+			}
+		}
+
 	}
 
-	$jsonReturn = json_encode($aReturn);
-	echo $jsonReturn;
+	$ajax = new AjaxActions($_POST['class'], $_POST['method'], $_POST['params']);
+	echo $ajax->perform();
