@@ -6,6 +6,7 @@
 	<title>Title</title>
 	<link rel="stylesheet" href="assets/css/normalize.css" />
 	<link rel="stylesheet" href="assets/css/foundation.min.css" />
+	<link rel="stylesheet" href="assets/fonts/foundation-icons.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 	<script src="assets/js/vendor/modernizr.js"></script>
 </head>
@@ -28,7 +29,7 @@
 		</div>
 		<div class="column small-12 medium-2 large-2 luceofaq-searchbox">
 			<a href="#" class="button postfix" data-reveal-id="addQuestion">
-				<img src="assets/images/plus.png" class="img-button">
+				<i class="fi-plus"></i>
 				Add
 			</a>
 		</div>
@@ -193,18 +194,19 @@
 
 	<div id="addQuestion" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 		<h3 id="modalTitle">Add a question</h3>
+		<div class="alertBoxDiv"></div>
 		<form>
 			<div class="row">
 				<div class="large-12 columns">
-					<label>The question
-						<input type="text" />
+					<label>Question
+						<input type="text" id="questionLabelInput" required/>
 					</label>
 				</div>
 			</div>
 			<div class="row">
 				<div class="large-12 columns">
-					<label>The answer
-						<textarea rows="6"></textarea>
+					<label>Answer
+						<textarea id="questionAnswerInput" rows="6" required></textarea>
 					</label>
 				</div>
 			</div>
@@ -230,7 +232,7 @@
 			</fieldset>
 			<div class="row">
 				<div class="column small-12">
-					<input type="submit" class="button" value="Add the question" />
+					<input type="submit" class="button" id="submitQuestion" value="Add the question" />
 				</div>
 			</div>
 		</form>
@@ -241,15 +243,6 @@
 	<script src="assets/js/vendor/jquery-ui.min.js"></script>
 	<script src="assets/js/vendor/fastclick.js"></script>
 	<script src="assets/js/foundation.min.js"></script>
-	<script src="assets/js/luceofaq.js"></script>
-	<script>
-		$(document).foundation();
-		$(function() {
-			$( "#accordion" ).accordion({
-				collapsible: true,
-				active: false
-			});
-		});
-	</script>
+	<script src="assets/js/luceofaq.min.js"></script>
 </body>
 </html>
