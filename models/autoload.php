@@ -1,11 +1,13 @@
 <?php
 
+	// Autoload function to get the classes needed automatically
+
 	function __autoload($className) {
-		$modelsPath = '/models\/';
+		$modelsPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR ;
 
 		$modelsFolders = array(
-			$modelsPath.'classes/',
-			$modelsPath.'database/'
+			$modelsPath.'classes' . DIRECTORY_SEPARATOR ,
+			$modelsPath.'database' . DIRECTORY_SEPARATOR
 		);
 
 		$fileName = '';
@@ -19,9 +21,13 @@
 		}
 
 		if ($fileName == '') {
-			echo 'Class '.$className.' not found.';
+			$response = array(
+				'error' => true,
+				'message' => 'The class "'.$className.'" is not found.'
+			);
+			echo json_encode($response);
 			exit();
 		}
 
-		include_once($fileName);
+		require_once($fileName);
 	}

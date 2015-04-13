@@ -3,7 +3,7 @@
 	require_once 'databaseConnection.php';
 
 	/**
-	* Class QuestionsDA : get the Questions from the database
+	* Class QuestionsDA : Data Adapter for the Question class
 	*/
 	class QuestionsDA
 	{
@@ -13,8 +13,18 @@
 			self::$_db = new DatabaseConnection();
 		}
 
-		public static function getQuestion($idQuestion){
-			return true;
+		/**
+		 * TEST FUNCTION ; TODO : implement getQuestion, get a question from the database based on its id, then update this doc
+		 * @param  int $idQuestion 		Id of the question to retrieve
+		 * @param  bool $retrunsArray 	True if we want a array as return (AJAX purpose) instead of object
+		 * @return Question        		Question object
+		 */
+		public static function getQuestion($idQuestion = 0, $returnsArray = false){
+			if ($returnsArray) {
+				return array('success' => true, 'id' => $idQuestion);
+			}else{
+				return true;
+			}
 		}
 
 	}

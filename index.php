@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Title</title>
+	<title>Luceo FAQ</title>
 	<link rel="stylesheet" href="assets/css/normalize.css" />
 	<link rel="stylesheet" href="assets/css/foundation.min.css" />
 	<link rel="stylesheet" href="assets/fonts/foundation-icons.css">
@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<div class="column small-12 medium-2 large-2 luceofaq-searchbox">
-			<a href="#" class="button postfix" data-reveal-id="addQuestion">
+			<a href="views/modal/addQuestion.php" class="button postfix" data-reveal-id="addQuestion" data-reveal-ajax="true">
 				<i class="fi-plus"></i>
 				Add
 			</a>
@@ -130,6 +130,10 @@
 		</div>
 	</div>
 
+	<div class="row" id="alertPanePage">
+		<div class="column small-12 alertBoxDiv"></div>
+	</div>
+
 	<div class="row luceofaq-content">
 		<div class="column small-12 luceofaq-question">
 			<h3>Lorem ipsum dolor. <span class="anchor"><a href="#">#</a></span><a href="#" class="button tiny right">Edit</a></h3>
@@ -193,50 +197,6 @@
 	</div>
 
 	<div id="addQuestion" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-		<h3 id="modalTitle">Add a question</h3>
-		<div class="alertBoxDiv"></div>
-		<form>
-			<div class="row">
-				<div class="large-12 columns">
-					<label>Question
-						<input type="text" id="questionLabelInput" required/>
-					</label>
-				</div>
-			</div>
-			<div class="row">
-				<div class="large-12 columns">
-					<label>Answer
-						<textarea id="questionAnswerInput" rows="6" required></textarea>
-					</label>
-				</div>
-			</div>
-			<fieldset>
-				<legend>Tags</legend>
-				<div class="column small-12">
-					<div class="row">
-						<div class="small-12 columns">
-							<div class="row collapse">
-								<div class="small-10 columns">
-									<input type="text" placeholder="Enter a tag name...">
-								</div>
-								<div class="small-2 columns">
-									<a href="#" class="button postfix">Add</a>
-								</div>
-							</div>
-						</div>
-						<div class="small-12 column">
-							<h4>Current tags</h4>
-						</div>
-					</div>
-				</div>
-			</fieldset>
-			<div class="row">
-				<div class="column small-12">
-					<input type="submit" class="button" id="submitQuestion" value="Add the question" />
-				</div>
-			</div>
-		</form>
-		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 	</div>
 
 	<script src="assets/js/vendor/jquery.js"></script>

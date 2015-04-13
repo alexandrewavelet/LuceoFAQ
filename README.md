@@ -6,7 +6,6 @@ This current version will contain questions, tags and search.
 ## Progress
 
 ### Curently working on
-* AJAX action class
 
 ### To do
 
@@ -31,6 +30,7 @@ This current version will contain questions, tags and search.
 * ~~Classes creation (DA and base)~~
 * ~~Base classes~~
 * ~~Models autoload~~
+* ~~AJAX action class~~
 
 ## Improvements
 Add more functionnalities : Login/signup, member area, most recent searches, predictive search, ...

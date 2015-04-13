@@ -11,8 +11,11 @@ $(function()
 		active: false
 	});
 
-	// Adding the onClick function to add questions
-	$('#submitQuestion').click(saveQuestion);
+	// the question form is loaded via AJAX, we bind the click event to the button when the modal opens
+	$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+		$('#submitQuestion').unbind('click').click(saveQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
+		$(document).foundation();
+	});
 
 	// Event on modal closure : We remove any alert message displayed inside
 	$(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
@@ -30,11 +33,25 @@ function saveQuestion()
 	var question = $('#questionLabelInput').val();
 	var answer = $('#questionAnswerInput').val();
 	if (question && answer) {
-		alert(question + ' : ' + answer);
+
+		// We fill the args with form data
+		var argsArray = [];
+		argsArray[argsArray.length] = 7; // Test value
+
 		// AJAX call
+		var params = {
+			phpclass:'QuestionsDA',
+			method:'saveNewQuestion',
+			args: argsArray
+		}
+
+		sendAjaxRequest(params, afterQuestionAdded, handleErrorPage);
 	} else{
 		addErrorMessage('The fields "Question" and "Answer" are mandatory.', '#addQuestion');
 	};
+
+	// Cancel the click on the button
+	return false;
 }
 
 /**
@@ -63,4 +80,57 @@ function constructAlertBox(message, type)
 	alertBox += '</div>';
 
 	return alertBox;
+}
+
+/**
+ * Executes an AJAX request to the AJAX controller
+ * @param  {array} params        		Contains the class, method, and params of the behavior to execute
+ * @param  {function} successFunction 	Function to fire in case of success
+ * @param  {function} failFunction    	Function to fire in case of PHP error
+ */
+function sendAjaxRequest(params, successFunction, failFunction)
+{
+	successFunction = (typeof successFunction === 'undefined') ? '' : successFunction;
+	failFunction = (typeof failFunction === 'undefined') ? handleErrorPage : failFunction;
+
+	$.ajax({
+		method: 'POST',
+		url: 'actions/ajaxactions.php',
+		data: params,
+		dataType: 'json',
+		success: function (response) {
+			if (!response.error) {
+				if(typeof successFunction === 'function') {
+					successFunction(response);
+				}
+			} else {
+				if(typeof failFunction === 'function') {
+					failFunction(response.message);
+				}
+			}
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			handleErrorPage('Something unexpected happened :(');
+			console.log(textStatus + ' : ' + errorThrown);
+		}
+	});
+}
+
+/**
+ * Function fired after saving a question to DB : close the modal, refresh the question list
+ * @param  {json} ajaxResponse Informations about the question added/saved
+ */
+function afterQuestionAdded(ajaxResponse)
+{
+	alert('Question id : ' + ajaxResponse.id);
+}
+
+/**
+ * Adds an error to the page and close the modal
+ * @param  {string} message Error message to display
+ */
+function handleErrorPage(message)
+{
+	addErrorMessage(message, '#alertPanePage');
+	$('#addQuestion').foundation('reveal', 'close');
 }

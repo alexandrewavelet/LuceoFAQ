@@ -1,6 +1,7 @@
 <?php
 
-	include_once('/models/autoload.php');
+	// Autoload : Kludge, find a better way
+	require_once(dirname(__DIR__) . '/models/autoload.php');
 
 	/**
 	* Class which handle AJAX calls for the application
@@ -24,13 +25,13 @@
 		 * List of parameters to pass to the method
 		 * @var array
 		 */
-		protected $params;
+		protected $args;
 
-		function __construct($class = '', $method = '', $params = array())
+		function __construct($class = '', $method = '', $args = array())
 		{
 			$this->class = $class;
 			$this->method = $method;
-			$this->params = json_decode($params, true);
+			$this->args = $args;
 		}
 
 		/**
@@ -90,8 +91,8 @@
 		 */
 		private function executeStep()
 		{
-			array_push($this->params, true); // Adding true forces the method to return an array
-			$response = call_user_func_array($this->class.'::'.$this->method, $this->params);
+			array_push($this->args, true); // Adding true forces the method to return an array
+			$response = call_user_func_array($this->class.'::'.$this->method, $this->args);
 			if ($response) {
 				return json_encode($response);
 			}else{
@@ -105,5 +106,11 @@
 
 	}
 
-	$ajax = new AjaxActions($_POST['class'], $_POST['method'], $_POST['params']);
+	// We get the POST parameters or set them empty by default
+	$class = (isset($_POST['phpclass'])) ? $_POST['phpclass'] : '' ;
+	$method = (isset($_POST['method'])) ? $_POST['method'] : '' ;
+	$args = (isset($_POST['args'])) ? $_POST['args'] : array() ;
+
+	// Function call
+	$ajax = new AjaxActions($class, $method, $args);
 	echo $ajax->perform();
