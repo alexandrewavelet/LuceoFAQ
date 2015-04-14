@@ -44,9 +44,9 @@
 		function __construct($id, $label, $answer)
 		{
 			$this->id = $id;
-			$label = (!is_array($label)) ?  array('En' => $label) : $label ;
+			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
 			$this->label = $label;
-			$answer = (!is_array($answer)) ?  array('En' => $answer) : $answer ;
+			$answer = (!is_array($answer)) ?  array('en_EN' => $answer) : $answer ;
 			$this->answer = $answer;
 
 			return $this;
@@ -77,23 +77,33 @@
 		}
 
 		/**
-		 * Gets the label (En and Fr).
-		 *
-		 * @return array
+		 * Get the labels in all languages
+		 * @return array Labels
 		 */
-		public function getLabel()
+		public function getLabelArray()
 		{
 			return $this->label;
 		}
 
 		/**
-		 * Sets the label (En and Fr).
+		 * Gets the label in the language asked. English by default
+		 *
+		 * @return array
+		 */
+		public function getLabel($lang = 'en_EN')
+		{
+			$label = (array_key_exists($lang, $this->getLabelArray())) ? $this->label[$lang] : $this->label['en_EN'] ;
+			return $label;
+		}
+
+		/**
+		 * Sets the labels (En and Fr).
 		 *
 		 * @param array $label the label
 		 *
 		 * @return self
 		 */
-		public function setLabel(array $label)
+		public function setLabelArray(array $label)
 		{
 			$this->label = $label;
 
@@ -101,13 +111,34 @@
 		}
 
 		/**
-		 * Gets the answer (En and Fr).
+		 * Set a label for a specific language. English by default
+		 * @param string $value Name of the label
+		 * @param string $lang  Language of the label
+		 */
+		public function setLabel($value, $lang = 'en_EN')
+		{
+			$this->label[$lang] = $value;
+		}
+
+
+		/**
+		 * Get the answers in all languages
+		 * @return array Answers
+		 */
+		public function getAnswerArray()
+		{
+			return $this->answer;
+		}
+
+		/**
+		 * Gets the answer in the language asked. English by default
 		 *
 		 * @return array
 		 */
-		public function getAnswer()
+		public function getAnswer($lang = 'en_EN')
 		{
-			return $this->answer;
+			$answer = (array_key_exists($lang, $this->getAnswerArray())) ? $this->answer[$lang] : $this->answer['en_EN'] ;
+			return $answer;
 		}
 
 		/**
@@ -117,11 +148,21 @@
 		 *
 		 * @return self
 		 */
-		public function setAnswer(array $answer)
+		public function setAnswerArray(array $answer)
 		{
 			$this->answer = $answer;
 
 			return $this;
+		}
+
+		/**
+		 * Set a answer for a specific language. English by default
+		 * @param string $value Name of the answer
+		 * @param string $lang  Language of the answer
+		 */
+		public function setAnswer($value, $lang = 'en_EN')
+		{
+			$this->answer[$lang] = $value;
 		}
 
 		/**

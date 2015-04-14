@@ -30,18 +30,21 @@ $(function()
  */
 function saveQuestion()
 {
+	var id = $('#questionIdInput').val();
 	var question = $('#questionLabelInput').val();
 	var answer = $('#questionAnswerInput').val();
-	if (question && answer) {
+	if (question && answer && isInt(id)) {
 
 		// We fill the args with form data
 		var argsArray = [];
-		argsArray[argsArray.length] = 7; // Test value
+		argsArray[argsArray.length] = id;
+		argsArray[argsArray.length] = question;
+		argsArray[argsArray.length] = answer;
 
 		// AJAX call
 		var params = {
 			phpclass:'QuestionsDA',
-			method:'saveNewQuestion',
+			method:'saveQuestion',
 			args: argsArray
 		}
 
@@ -133,4 +136,13 @@ function handleErrorPage(message)
 {
 	addErrorMessage(message, '#alertPanePage');
 	$('#addQuestion').foundation('reveal', 'close');
+}
+
+/**
+ * Check if the param is an integer
+ * @param  {mixed}  	value var to test
+ * @return {Boolean}    true if value is an integer, false otherwise
+ */
+function isInt(value) {
+	return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }

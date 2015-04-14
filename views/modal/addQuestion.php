@@ -1,6 +1,7 @@
 <h3 id="modalTitle">Add a question</h3>
 <div class="alertBoxDiv"></div>
 <form>
+	<input type="hidden" value="0" id="questionIdInput">
 	<div class="row">
 		<div class="large-12 columns">
 			<label>Question
