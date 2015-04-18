@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 29 Mars 2015 à 03:56
+-- Généré le :  Sam 18 Avril 2015 à 02:39
 -- Version du serveur :  5.6.15-log
 -- Version de PHP :  5.5.8
 
@@ -34,7 +34,15 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `answer_fr` text NOT NULL,
   `wiki_url` varchar(255) NOT NULL,
   PRIMARY KEY (`pkQuestion`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `questions`
+--
+
+INSERT INTO `questions` (`pkQuestion`, `question_en`, `question_fr`, `answer_en`, `answer_fr`, `wiki_url`) VALUES
+(1, 'Do you know any question I can ask?', '', 'How about "How can I code without making any mistakes and avoid stupid errors?"', '', ''),
+(2, 'Ahah, it worked this time !', '', 'Considering the amount of stupid mistakes you had, I think it''s a miracle !', '', '');
 
 -- --------------------------------------------------------
 
@@ -70,8 +78,8 @@ CREATE TABLE IF NOT EXISTS `tags` (
 -- Contraintes pour la table `questions_tags`
 --
 ALTER TABLE `questions_tags`
-  ADD CONSTRAINT `fk_tag_questions` FOREIGN KEY (`pkTag`) REFERENCES `tags` (`pkTag`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_question_tags` FOREIGN KEY (`pkQuestion`) REFERENCES `questions` (`pkQuestion`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_question_tags` FOREIGN KEY (`pkQuestion`) REFERENCES `questions` (`pkQuestion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tag_questions` FOREIGN KEY (`pkTag`) REFERENCES `tags` (`pkTag`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
