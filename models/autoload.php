@@ -6,8 +6,9 @@
 		$modelsPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR ;
 
 		$modelsFolders = array(
+			$modelsPath.'actions' . DIRECTORY_SEPARATOR ,
 			$modelsPath.'classes' . DIRECTORY_SEPARATOR ,
-			$modelsPath.'database' . DIRECTORY_SEPARATOR
+			$modelsPath.'dataadapter' . DIRECTORY_SEPARATOR
 		);
 
 		$fileName = '';

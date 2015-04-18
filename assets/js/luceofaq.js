@@ -43,7 +43,7 @@ function saveQuestion()
 
 		// AJAX call
 		var params = {
-			phpclass:'QuestionsDA',
+			phpclass:'QuestionActions',
 			method:'saveQuestion',
 			args: argsArray
 		}
@@ -65,6 +65,13 @@ function saveQuestion()
 function addErrorMessage(message, divToAppend)
 {
 	var alertBox = constructAlertBox(message, 'alert');
+	$(divToAppend + ' .alertBoxDiv').append(alertBox);
+	$(document).foundation();
+}
+
+function addSuccessMessage(message, divToAppend)
+{
+	var alertBox = constructAlertBox(message, 'success');
 	$(divToAppend + ' .alertBoxDiv').append(alertBox);
 	$(document).foundation();
 }
@@ -125,7 +132,9 @@ function sendAjaxRequest(params, successFunction, failFunction)
  */
 function afterQuestionAdded(ajaxResponse)
 {
-	alert('Question id : ' + ajaxResponse.id);
+	console.log('Question id added : ' + ajaxResponse.id);
+	addSuccessMessage(ajaxResponse.message, '#alertPanePage');
+	$('#addQuestion').foundation('reveal', 'close');
 }
 
 /**

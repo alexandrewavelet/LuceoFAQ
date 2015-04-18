@@ -14,11 +14,11 @@
 		protected $id;
 
 		/**
-		 * label (En and Fr)
+		 * question (En and Fr)
 		 *
 		 * @var array
 		 */
-		protected $label;
+		protected $question;
 
 		/**
 		 * answer (En and Fr)
@@ -32,7 +32,7 @@
 		 *
 		 * @var string
 		 */
-		protected $wikiLink;
+		protected $wikiURL;
 
 		/**
 		 * tags (array of ids)
@@ -41,13 +41,14 @@
 		 */
 		protected $tags;
 
-		function __construct($id, $label, $answer)
+		function __construct($id, $question, $answer)
 		{
 			$this->id = $id;
-			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
-			$this->label = $label;
+			$question = (!is_array($question)) ?  array('en_EN' => $question) : $question ;
+			$this->question = $question;
 			$answer = (!is_array($answer)) ?  array('en_EN' => $answer) : $answer ;
 			$this->answer = $answer;
+			$this->wikiURL = '';
 
 			return $this;
 		}
@@ -77,47 +78,47 @@
 		}
 
 		/**
-		 * Get the labels in all languages
-		 * @return array Labels
+		 * Get the questions in all languages
+		 * @return array Questions
 		 */
-		public function getLabelArray()
+		public function getQuestionArray()
 		{
-			return $this->label;
+			return $this->question;
 		}
 
 		/**
-		 * Gets the label in the language asked. English by default
+		 * Gets the question in the language asked. English by default
 		 *
 		 * @return array
 		 */
-		public function getLabel($lang = 'en_EN')
+		public function getQuestion($lang = 'en_EN')
 		{
-			$label = (array_key_exists($lang, $this->getLabelArray())) ? $this->label[$lang] : $this->label['en_EN'] ;
-			return $label;
+			$question = (array_key_exists($lang, $this->getQuestionArray())) ? $this->question[$lang] : $this->question['en_EN'] ;
+			return $question;
 		}
 
 		/**
-		 * Sets the labels (En and Fr).
+		 * Sets the questions (En and Fr).
 		 *
-		 * @param array $label the label
+		 * @param array $question the question
 		 *
 		 * @return self
 		 */
-		public function setLabelArray(array $label)
+		public function setQuestionArray(array $question)
 		{
-			$this->label = $label;
+			$this->question = $question;
 
 			return $this;
 		}
 
 		/**
-		 * Set a label for a specific language. English by default
-		 * @param string $value Name of the label
-		 * @param string $lang  Language of the label
+		 * Set a question for a specific language. English by default
+		 * @param string $value Name of the question
+		 * @param string $lang  Language of the question
 		 */
-		public function setLabel($value, $lang = 'en_EN')
+		public function setQuestion($value, $lang = 'en_EN')
 		{
-			$this->label[$lang] = $value;
+			$this->question[$lang] = $value;
 		}
 
 
@@ -166,25 +167,25 @@
 		}
 
 		/**
-		 * Gets the wiki link.
+		 * Gets the wiki URL.
 		 *
 		 * @return string
 		 */
-		public function getWikiLink()
+		public function getWikiURL()
 		{
-			return $this->wikiLink;
+			return $this->wikiURL;
 		}
 
 		/**
-		 * Sets the wiki link.
+		 * Sets the wiki URL.
 		 *
-		 * @param string $wikiLink the wiki link
+		 * @param string $wikiURL the wiki URL
 		 *
 		 * @return self
 		 */
-		public function setWikiLink($wikiLink)
+		public function setWikiURL($wikiURL)
 		{
-			$this->wikiLink = $wikiLink;
+			$this->wikiURL = $wikiURL;
 
 			return $this;
 		}
@@ -268,5 +269,35 @@
 			foreach ($tags as $tag) {
 				$this->deleteTag($tag);
 			}
+		}
+
+		/**
+		 * Returns all args into an array, except $excludeArgs
+		 * @param  array  $renameArgs 	Array of args to ignore
+		 * @param  array  $excludeArgs 	Array of args to ignore
+		 * @return array               	Plain array of the object args
+		 */
+		public function serialize($renameArgs= array('id' => 'pkQuestion', 'wikiURL' => 'wiki_url'), $excludeArgs = array('tags'))
+		{
+			$response = array();
+			$args = get_class_vars(get_class($this));
+			$argsName = array_keys($args);
+			$argsName = array_diff($argsName, $excludeArgs);
+			foreach ($argsName as $name) {
+				if (is_array($this->$name)) {
+					foreach ($this->$name as $lang => $value) {
+						$response[$name.'_'.substr($lang, 0, 2)] = $value;
+					}
+				} else {
+					$response[$name] = $this->$name;
+				}
+			}
+			foreach ($renameArgs as $oldKey => $newKey) {
+				if (array_key_exists($oldKey, $response)) {
+					$response[$newKey] = $response[$oldKey];
+					unset($response[$oldKey]);
+				}
+			}
+			return $response;
 		}
 }

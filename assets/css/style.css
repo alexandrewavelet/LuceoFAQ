@@ -49,3 +49,7 @@ h3{
 .luceofaq-question h3:hover > .anchor{
 	display: inline-block;
 }
+
+.alert h6{
+	color: white;
+}

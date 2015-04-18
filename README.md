@@ -6,11 +6,13 @@ This current version will contain questions, tags and search.
 ## Progress
 
 ### Curently working on
+* Add a question -> Optimize
 
 ### To do
+* Add consistency in naming convention (change DB field names to camelCase)
+* Optimize JS functions (Add infos to the JS console, contruct DB error messages)
 
 #### Questions
-* Save a question
 * List all questions
 * Edit a question
 * Delete a question
