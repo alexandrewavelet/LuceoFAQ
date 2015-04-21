@@ -14,13 +14,8 @@ $(function()
 	// the question form is loaded via AJAX, we bind the click event to the button when the modal opens
 	$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
 		$('#submitQuestion').unbind('click').click(saveQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
+		$('#addTagButton').unbind('click').click(addTagQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
 		$(document).foundation();
-	});
-
-	// Event on modal closure : We remove any alert message displayed inside
-	$(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
-		var modalId = this.id;
-		$('#' + modalId + ' .alertBoxDiv').empty();
 	});
 
 });
@@ -58,6 +53,38 @@ function saveQuestion()
 }
 
 /**
+ * On click on the "Add" button for tags in the modal, adds the tag in the tags list.
+ * Need to add a max lenght for the tag
+ * Will be completed with tag autocompletion
+ */
+function addTagQuestion(){
+	event.preventDefault();
+	var tagNode = $('#questionTagInput');
+	if (tagNode.val() == '') { return false; };
+	if (tagNode.val().length > 20) {
+		addErrorMessage('Tag lenght can\'t be more than 20 characters', '#addQuestion');
+		tagNode.val('');
+		return false;
+	};
+	var tagElement = constructTagElement(tagNode.val());
+	$('#tagsList').append(tagElement);
+	tagNode.val('');
+}
+
+/**
+ * Construct the tag element
+ * Will be completed with tag autocompletion
+ * @param  {string} tagName Name of the tag
+ * @return {string}         HTML of the tag element
+ */
+function constructTagElement(tagName){
+	var tagElement 	= '<span class="button tagElement" data-idTag="0" data-nameTag="' + tagName + '">';
+		tagElement += tagName;
+		tagElement += '</span>';
+	return tagElement;
+}
+
+/**
  * Adds an error message in the .alertBoxDiv of an element
  * @param {string} message     Error message to display
  * @param {string} divToAppend Id of the div element where to display the error
@@ -84,7 +111,7 @@ function addSuccessMessage(message, divToAppend)
  */
 function constructAlertBox(message, type)
 {
-	var alertBox = '<div data-alert class="alert-box ' + type + '">';
+	var alertBox  = '<div data-alert class="alert-box ' + type + '">';
 		alertBox += message;
 		alertBox += '<a href="#" class="close">&times;</a>';
 	alertBox += '</div>';
