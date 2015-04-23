@@ -12,13 +12,24 @@ $(function()
 	});
 
 	// the question form is loaded via AJAX, we bind the click event to the button when the modal opens
-	$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-		$('#submitQuestion').unbind('click').click(saveQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
-		$('#addTagButton').unbind('click').click(addTagQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
-		$(document).foundation();
-	});
+	// We initialze the events when the "add question" modal is open
+	$(document).on('opened.fndtn.reveal', '[data-reveal]', initModalQuestion);
 
 });
+
+/**
+ * We binds the events on the elements of the modal
+ */
+function initModalQuestion() {
+	$('#submitQuestion').unbind('click').click(saveQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
+	$('#addTagButton').unbind('click').click(addTagQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
+	$('#questionTagInput').unbind('keypress').keypress(function(e) {
+		if(e.which == 13) { // If the user hits enter, we add the tag
+			addTagQuestion();
+		}
+	});
+	$(document).foundation();
+}
 
 /**
  * Get the informations in the question form, then send an AJAX request to save the question
@@ -53,8 +64,7 @@ function saveQuestion()
 }
 
 /**
- * On click on the "Add" button for tags in the modal, adds the tag in the tags list.
- * Need to add a max lenght for the tag
+ * On click on the "Add" button for tags in the modal, adds the tag in the tags list and binds the events on tags
  * Will be completed with tag autocompletion
  */
 function addTagQuestion(){
@@ -68,7 +78,20 @@ function addTagQuestion(){
 	};
 	var tagElement = constructTagElement(tagNode.val());
 	$('#tagsList').append(tagElement);
-	tagNode.val('');
+	tagNode.val('').focus();
+	initTagsEvents();
+}
+
+/**
+ * Init tags events : change style on hover and remove on click
+ */
+function initTagsEvents(){
+	$('.tagElement').click(deleteTag).hover(function() {
+		$(this).width($(this).width());
+		$(this).addClass('alert').text('Remove');
+	}, function() {
+		$(this).removeClass('alert').text($(this).data('tagname'));
+	});
 }
 
 /**
@@ -78,10 +101,17 @@ function addTagQuestion(){
  * @return {string}         HTML of the tag element
  */
 function constructTagElement(tagName){
-	var tagElement 	= '<span class="button tagElement" data-idTag="0" data-nameTag="' + tagName + '">';
+	var tagElement 	= '<span class="button tagElement" data-tagid="0" data-tagname="' + tagName + '">';
 		tagElement += tagName;
 		tagElement += '</span>';
 	return tagElement;
+}
+
+/**
+ * Delete a tag node from HTML
+ */
+function deleteTag(){
+	$(this).remove();
 }
 
 /**
@@ -92,13 +122,26 @@ function constructTagElement(tagName){
 function addErrorMessage(message, divToAppend)
 {
 	var alertBox = constructAlertBox(message, 'alert');
-	$(divToAppend + ' .alertBoxDiv').append(alertBox);
-	$(document).foundation();
+	appendAlertMessage(alertBox, divToAppend);
 }
 
+/**
+ * Adds a success message in the .alertBoxDiv of an element
+ * @param {string} message     Success message to display
+ * @param {string} divToAppend Id of the div element where to display the error
+ */
 function addSuccessMessage(message, divToAppend)
 {
 	var alertBox = constructAlertBox(message, 'success');
+	appendAlertMessage(alertBox, divToAppend);
+}
+
+/**
+ * Append the alertBox to the concerned div element
+ * @param  {string} alertBox    alert box to display
+ * @param  {string} divToAppend Element parent where to display the alert
+ */
+function appendAlertMessage(alertBox, divToAppend){
 	$(divToAppend + ' .alertBoxDiv').append(alertBox);
 	$(document).foundation();
 }

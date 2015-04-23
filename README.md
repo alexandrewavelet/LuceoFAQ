@@ -6,7 +6,7 @@ This current version will contain questions, tags and search.
 ## Progress
 
 ### Curently working on
-* Add a question -> Optimize
+* Adding and removing tags from question (visually only)
 
 ### To do
 * Add consistency in naming convention (change DB field names to camelCase)
@@ -19,9 +19,9 @@ This current version will contain questions, tags and search.
 * Search for questions
 
 #### Tags
-* Adding tags to a question
+* Adding tags to a question (DB)
 * Tags in questions list
-* Delete tags from question
+* Delete tags from question (DB)
 * Search by tags
 * Insert number of tagged questions in the tag panel
 
@@ -33,6 +33,7 @@ This current version will contain questions, tags and search.
 * ~~Base classes~~
 * ~~Models autoload~~
 * ~~AJAX action class~~
+* ~~Add a question~~
 
 ## Improvements
-Add more functionnalities : Login/signup, member area, most recent searches, predictive search, ...
+Add more functionnalities : Login/signup, member area, most recent searches, predictive search, Add question without answer for other people to answer ("knowledge request"), ...
