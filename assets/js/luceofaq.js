@@ -41,11 +41,18 @@ function saveQuestion()
 	var answer = $('#questionAnswerInput').val();
 	if (question && answer && isInt(id)) {
 
+		// We get the tags of the question
+		var tags = [];
+		$('.tagElement').each(function(){
+			tags[tags.length] = {'id' : $(this).data('tagid'), 'name' : $(this).data('tagname')};
+		});
+
 		// We fill the args with form data
 		var argsArray = [];
 		argsArray[argsArray.length] = id;
 		argsArray[argsArray.length] = question;
 		argsArray[argsArray.length] = answer;
+		argsArray[argsArray.length] = tags;
 
 		// AJAX call
 		var params = {

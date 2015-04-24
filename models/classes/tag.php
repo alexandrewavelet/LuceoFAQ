@@ -127,4 +127,9 @@
 
 			return $this;
 		}
+
+		public function __toString()
+		{
+			return strtolower($this->label['en_EN']);
+		}
 }
