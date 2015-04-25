@@ -15,7 +15,7 @@
 		{
 			$tagsObjects = array();
 			foreach ($tagsArray as $tag) {
-				array_push($tagsObjects, new Tag($tag['id'], $tag['name']));
+				array_push($tagsObjects, new Tag(TagsDA::getTagID($tag['name']), $tag['name']));
 			}
 
 			return $tagsObjects;

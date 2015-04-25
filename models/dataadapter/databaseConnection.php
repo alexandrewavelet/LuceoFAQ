@@ -10,7 +10,7 @@
 
 		/**
 		 * SQL query to perform
-		 * @var string
+		 * @var PDOStatement
 		 */
 		protected $statement;
 
@@ -42,7 +42,7 @@
 		/**
 		* Sets the value of statement.
 		*
-		* @param mixed $statement the statement (either PDOStatement or string)
+		* @param mixed $statement The statement (either PDOStatement or string)
 		*
 		* @return self
 		*/
@@ -60,18 +60,18 @@
 
 		/**
 		 * Construct an Insert statement in a PDOStatement object, then fill it with parameters
-		 * @param  string $table  name of the table where insert the data
-		 * @param  array  $values values to insert and name of the columns
+		 * @param  string $table  Name of the table where insert the data
+		 * @param  array  $values Values to insert and name of the columns
 		 */
 		public function prepareInsertStatement($table, $values)
 		{
 			// We create an array with unnamed placeholder to bind the params
 			$numberOfValues = count($values);
 			$placeholders = implode(',', array_fill(0, $numberOfValues, '?'));
-			$this->statement = $this->connection->prepare('INSERT INTO '.$table.' ('.implode(',', array_keys($values)).') VALUES ('.$placeholders.')');
+			$this->statement = $this->connection->prepare('INSERT INTO '.$table.' ('.implode(',', array_keys($values)).') VALUES (:'.implode(', :', array_keys($values)).')');
 			$insertValues = array_values($values);
-			foreach ($insertValues as $paramNum => &$value) {
-				$this->statement->bindParam($paramNum + 1, $value);
+			foreach ($values as $column => &$value) {
+				$this->statement->bindParam(':'.$column, $value);
 			}
 		}
 
@@ -80,9 +80,21 @@
 			# code...
 		}
 
+		/**
+		 * Construct a Delete statement in a PDOStatement object, then fill it with parameters
+		 * @param  string 	$table      Name of the table where delete the data
+		 * @param  array 	$conditions Values to restrcit the delete (where clause)
+		 */
 		public function prepareDeleteStatement($table, $conditions)
 		{
-			# code...
+			$where = array();
+			foreach ($conditions as $column => $value) {
+				array_push($where, $column.' = :'.$column);
+			}
+			$this->statement = $this->connection->prepare('DELETE FROM '.$table.' WHERE '.implode(', ', $where));
+			foreach ($conditions as $column => &$value) {
+				$this->statement->bindParam(':'.$column, $value);
+			}
 		}
 
 		public function prepareSelectStatement($params, $template)
@@ -92,11 +104,22 @@
 
 		/**
 		 * Executes the statement
-		 * @return bool true if success, false if fail
+		 * @return bool True if success, false if fail
 		 */
 		public function executeStatement()
 		{
 			return $this->statement->execute();
+		}
+
+		/**
+		 * Executes an SQL statement directly and return the result as array
+		 * @param  string $sql 	SQL query
+		 * @return array      	Query result
+		 */
+		public function execSQL($sql)
+		{
+			$this->statement = $this->connection->query($sql);
+			return $this->statement->fetchAll(PDO::FETCH_ASSOC);
 		}
 
 		/**

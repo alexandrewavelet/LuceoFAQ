@@ -45,7 +45,6 @@
 				$response = ($returnsArray) ? array('error' => true, 'message' => self::$_db->getErrorMessage()) : false ;
 			}
 
-			// Use DatabaseConnection to create insert statement, then executes, verify and return what's asked
 			return $response;
 		}
 
@@ -59,6 +58,54 @@
 		{
 			// Use DatabaseConnection to create update statement, then executes, verify and return what's asked
 			return $response;
+		}
+
+		/**
+		 * Links tags to a question : delete the existing links, then add the new ones
+		 * @param  Question $question 	The question containing the tags
+		 * @return mixed             	True if everything is okay, array with error message if not
+		 */
+		public static function saveQuestionTags(Question $question)
+		{
+			$deleteExecuted = self::deleteLiensQuestionTags($question);
+			$insertExecuted = true;
+			$insertFails = array();
+
+			foreach ($question->getTags() as $tag) {
+				if ($tag->getId() == 0) {
+					$tagCreated = TagsDA::insertTag($tag); // returns the id of the tag if success
+					if ($tagCreated) {
+						$tag->setId($tagCreated);
+					}else{
+						return array('error' => true, 'message' => self::$_db->getErrorMessage());
+					}
+				}
+				$insertValues = array('pkQuestion' => $question->getId(), 'pkTag' => $tag->getId());
+				self::$_db->prepareInsertStatement('questions_tags', $insertValues);
+				if (!self::$_db->executeStatement()) {
+					$insertExecuted = false;
+					array_push($insertFails, $tag);
+				}
+			}
+
+			if (!$deleteExecuted || !$insertExecuted) {
+				$response = QuestionActions::buildErrorMessageTagSave($deleteExecuted, $insertExecuted, $insertFails);
+			}else{
+				$response = true;
+			}
+
+			return $response;
+		}
+
+		/**
+		 * Delete all the links question-tags for a question
+		 * @param  Question $question 	The question
+		 * @return boolean           	True if success, else false
+		 */
+		public static function deleteLiensQuestionTags(Question $question)
+		{
+			self::$_db->prepareDeleteStatement('questions_tags', array('pkQuestion' => $question->getId()));
+			return self::$_db->executeStatement();
 		}
 
 	}
