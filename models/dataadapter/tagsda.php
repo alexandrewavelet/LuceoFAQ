@@ -43,6 +43,11 @@
 			return $response;
 		}
 
+		public static function getTagsList()
+		{
+			return self::$_db->execSQL('SELECT t.pkTag AS id, t.label_en AS label, COUNT(*) AS numberOfQuestions FROM tags t LEFT JOIN questions_tags qt ON t.pkTag = qt.pkTag GROUP BY id, label ORDER BY label', 'Tag');
+		}
+
 		/**
 		 * Gets the id of a tag if it exists in DB (based on its name), à if new Tag
 		 * @param  string $name Label of the tag to look for

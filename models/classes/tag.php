@@ -26,7 +26,7 @@
 		 */
 		protected $numberOfQuestions;
 
-		function __construct($id, $label, $numberOfQuestions = 0)
+		function __construct($id = 0, $label = 'Not initialized', $numberOfQuestions = 0)
 		{
 			$this->id = $id;
 			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
@@ -76,6 +76,9 @@
 		 */
 		public function getLabel($lang = 'en_EN')
 		{
+			if (!is_array($this->label)) {
+				$this->label = array('en_EN' => $this->label);
+			}
 			$label = (array_key_exists($lang, $this->getLabelArray())) ? $this->label[$lang] : $this->label['en_EN'] ;
 			return $label;
 		}

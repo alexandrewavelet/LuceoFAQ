@@ -116,10 +116,11 @@
 		 * @param  string $sql 	SQL query
 		 * @return array      	Query result
 		 */
-		public function execSQL($sql)
+		public function execSQL($sql, $returnsObject = false)
 		{
 			$this->statement = $this->connection->query($sql);
-			return $this->statement->fetchAll(PDO::FETCH_ASSOC);
+			$result = ($returnsObject) ? $this->statement->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, $returnsObject) : $this->statement->fetchAll(PDO::FETCH_ASSOC) ;
+			return $result;
 		}
 
 		/**

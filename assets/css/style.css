@@ -23,6 +23,7 @@ h3{
 	background-color: #008cba;
 	color: white;
 	padding-left: 10px;
+	cursor: pointer;
 }
 
 .switch label{

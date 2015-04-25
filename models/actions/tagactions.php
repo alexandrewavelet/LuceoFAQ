@@ -21,4 +21,16 @@
 			return $tagsObjects;
 		}
 
+		public static function getTagsList()
+		{
+			$tags = array();
+
+			$tagsArray = TagsDA::getTagsList();
+			// foreach ($tagsArray as $tag) {
+			// 	array_push($tags, new Tag($tag['id'], $tag['label'], $tag['numberOfQuestions']));
+			// }
+
+			return $tagsArray;
+		}
+
 	}
