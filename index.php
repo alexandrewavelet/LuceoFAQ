@@ -38,7 +38,7 @@
 	<div class="row">
 		<div class="column small-12" id="accordion">
 			<h3>Tags</h3>
-			<div>
+			<div id="tagSearchlist">
 				<?php require_once('views/search/tagsList.php'); ?>
 			</div>
 		</div>
@@ -117,6 +117,6 @@
 	<script src="assets/js/vendor/jquery-ui.min.js"></script>
 	<script src="assets/js/vendor/fastclick.js"></script>
 	<script src="assets/js/foundation.min.js"></script>
-	<script src="assets/js/luceofaq.min.js"></script>
+	<script src="assets/js/luceofaq.js"></script>
 </body>
 </html>

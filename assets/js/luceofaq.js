@@ -212,6 +212,7 @@ function afterQuestionAdded(ajaxResponse)
 	console.log('Question id added : ' + ajaxResponse.id);
 	addSuccessMessage(ajaxResponse.message, '#alertPanePage');
 	$('#addQuestion').foundation('reveal', 'close');
+	$('#tagSearchlist').load('views/search/tagsList.php');
 }
 
 /**
