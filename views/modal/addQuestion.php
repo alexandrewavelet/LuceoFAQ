@@ -22,7 +22,7 @@
 			<div class="row">
 				<div class="small-12 columns">
 					<div class="row collapse">
-						<div class="small-10 columns">
+						<div class="small-10 columns" id="autocompleteInputTag">
 							<input type="text" id="questionTagInput" placeholder="Enter a tag name...">
 						</div>
 						<div class="small-2 columns">

@@ -112,9 +112,9 @@
 		}
 
 		/**
-		 * Executes an SQL statement directly and return the result as array
+		 * Executes an SQL statement directly and return the result as array or object
 		 * @param  string $sql 	SQL query
-		 * @return array      	Query result
+		 * @return array      	Query result in array (of arrays or objects)
 		 */
 		public function execSQL($sql, $returnsObject = false)
 		{

@@ -6,7 +6,7 @@ This current version will contain questions, tags and search.
 ## Progress
 
 ### Curently working on
-* Tags in questions list
+* Delete tags from question (DB) : Should work, needs testing (Question list and edit)
 
 ### To do
 * Add consistency in naming convention (change DB field names to camelCase)
@@ -19,11 +19,7 @@ This current version will contain questions, tags and search.
 * Search for questions
 
 #### Tags
-
-* Autocompletion tag field in the modal
-* Delete tags from question (DB)
 * Search by tags
-* Insert number of tagged questions in the tag panel
 
 ### Done
 * ~~Base pattern~~
@@ -35,6 +31,10 @@ This current version will contain questions, tags and search.
 * ~~AJAX action class~~
 * ~~Add a question~~
 * ~~Adding tags to a question (Visually & sDB)~~
+* ~~Tags in questions list~~
+* ~~Autocompletion tag field in the modal~~
+* ~~Insert number of tagged questions in the tag panel~~
+* ~~Delete tags from question (DB)~~
 
 ## Improvements
 Add more functionnalities : Login/signup, member area, most recent searches, predictive search, Add question without answer for other people to answer ("knowledge request"), ...

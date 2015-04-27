@@ -43,6 +43,10 @@
 			return $response;
 		}
 
+		/**
+		 * Gets all the tags
+		 * @return array  Array of Tag objects
+		 */
 		public static function getTagsList()
 		{
 			return self::$_db->execSQL('SELECT t.pkTag AS id, t.label_en AS label, COUNT(*) AS numberOfQuestions FROM tags t LEFT JOIN questions_tags qt ON t.pkTag = qt.pkTag GROUP BY id, label ORDER BY label', 'Tag');
@@ -57,6 +61,16 @@
 		{
 			$resSQL = self::$_db->execSQL('SELECT IFNULL((SELECT pkTag FROM tags WHERE label_en = "'.$name.'"), 0) AS id'); // Has to be improved/changed with new select method/object
 			return $resSQL[0]['id'];
+		}
+
+		/**
+		 * Gets all the tag containing $term in their label (used for autocomplete)
+		 * @param  string $term Part of the label to look for
+		 * @return Array       	Array of labels
+		 */
+		public static function getTagsListByLabel($term)
+		{
+			return self::$_db->execSQL('SELECT t.label_en AS label FROM tags t WHERE t.label_en LIKE "%'.$term.'%" ORDER BY label');
 		}
 
 	}

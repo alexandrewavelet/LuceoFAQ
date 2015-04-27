@@ -6,9 +6,19 @@ $(function()
 {
 
 	// Enabling the tag-search accordion
-	$( "#accordion" ).accordion({
+	// Kludge : Several steps to get something neat
+	// 1. We init the accordion
+	// 2. We load content via ajax (php include let the tag list visible for 1 sec) : It's inivisible
+	// 3. There's a behavior which makes the animation bug if the content is loaded dynamically : We destroy then recreate the accordion
+	$('#accordion').accordion({
 		collapsible: true,
 		active: false
+	});
+	$('#tagSearchlist').load('views/search/tagsList.php', function(){
+		$('#accordion').accordion('destroy').accordion({
+			collapsible: true,
+			active: false
+		});
 	});
 
 	// the question form is loaded via AJAX, we bind the click event to the button when the modal opens
@@ -23,12 +33,32 @@ $(function()
 function initModalQuestion() {
 	$('#submitQuestion').unbind('click').click(saveQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
 	$('#addTagButton').unbind('click').click(addTagQuestion); // Unbind is here to prevent foundation bug of the "opened" event firing twice.
+	$('#questionTagInput').autocomplete({
+		appendTo: '#autocompleteInputTag',
+		source : function(request, callback){
+			searchTags(request.term, callback);
+		},
+		minLength : 2,
+		autoFocus : true
+	});
 	$('#questionTagInput').unbind('keypress').keypress(function(e) {
 		if(e.which == 13) { // If the user hits enter, we add the tag
 			addTagQuestion();
 		}
 	});
 	$(document).foundation();
+}
+
+function searchTags(term, callback) {
+	var args = [];
+	args[args.length] = term;
+	var params = {
+		phpclass: 'TagActions',
+		method: 'getTagsListFiltered',
+		args: args
+	};
+	var tags = sendAjaxRequest(params, returnResult, handleErrorPage, false);
+	callback(tags);
 }
 
 /**
@@ -59,7 +89,7 @@ function saveQuestion()
 			phpclass:'QuestionActions',
 			method:'saveQuestion',
 			args: argsArray
-		}
+		};
 
 		sendAjaxRequest(params, afterQuestionAdded, handleErrorPage);
 	} else{
@@ -175,20 +205,23 @@ function constructAlertBox(message, type)
  * @param  {function} successFunction 	Function to fire in case of success
  * @param  {function} failFunction    	Function to fire in case of PHP error
  */
-function sendAjaxRequest(params, successFunction, failFunction)
+function sendAjaxRequest(params, successFunction, failFunction, asynchrone)
 {
+	if (!asynchrone) { var result =''; };
 	successFunction = (typeof successFunction === 'undefined') ? '' : successFunction;
 	failFunction = (typeof failFunction === 'undefined') ? handleErrorPage : failFunction;
 
 	$.ajax({
 		method: 'POST',
 		url: 'actions/ajaxactions.php',
+		async: asynchrone,
 		data: params,
 		dataType: 'json',
 		success: function (response) {
 			if (!response.error) {
 				if(typeof successFunction === 'function') {
 					successFunction(response);
+					if (!asynchrone) { result = response; };
 				}
 			} else {
 				if(typeof failFunction === 'function') {
@@ -201,6 +234,8 @@ function sendAjaxRequest(params, successFunction, failFunction)
 			console.log(textStatus + ' : ' + errorThrown);
 		}
 	});
+
+	if (!asynchrone) { return result; };
 }
 
 /**
@@ -223,6 +258,10 @@ function handleErrorPage(message)
 {
 	addErrorMessage(message, '#alertPanePage');
 	$('#addQuestion').foundation('reveal', 'close');
+}
+
+function returnResult(arg) {
+	return arg;
 }
 
 /**

@@ -39,7 +39,6 @@
 		<div class="column small-12" id="accordion">
 			<h3>Tags</h3>
 			<div id="tagSearchlist">
-				<?php require_once('views/search/tagsList.php'); ?>
 			</div>
 		</div>
 	</div>

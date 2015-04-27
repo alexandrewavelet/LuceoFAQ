@@ -63,3 +63,27 @@ h3{
 	padding-left: 0;
 	padding-right: 0;
 }
+
+#autocompleteInputTag ul{
+	width: 100%;
+	list-style-type: none;
+	border: 1px solid #CDDCE0;
+	position: absolute;
+	z-index: 1000;
+	background: white;
+}
+
+#autocompleteInputTag li{
+	cursor: pointer;
+	padding: 10px;
+	padding-left: 15px;
+}
+
+#autocompleteInputTag li.ui-state-focus{
+	background-color: #008cba;
+	color: white;
+}
+
+.hidden{
+	visibility: hidden;
+}

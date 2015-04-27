@@ -21,16 +21,26 @@
 			return $tagsObjects;
 		}
 
+		/**
+		 * Gets all the tags
+		 * @return array  Array with Tag objects
+		 */
 		public static function getTagsList()
 		{
-			$tags = array();
-
 			$tagsArray = TagsDA::getTagsList();
-			// foreach ($tagsArray as $tag) {
-			// 	array_push($tags, new Tag($tag['id'], $tag['label'], $tag['numberOfQuestions']));
-			// }
 
 			return $tagsArray;
+		}
+
+		/**
+		 * Gets tags filtered by their label
+		 * @param  string 	$term 			Term to look for in the labels
+		 * @param  boolean 	$returnsArray 	True if we want an array as return
+		 * @return array       				Array of tags labels
+		 */
+		public static function getTagsListFiltered($term, $returnsArray = false)
+		{
+			return TagsDA::getTagsListByLabel($term);
 		}
 
 	}
