@@ -1,11 +1,11 @@
 <?php
-
+		require_once('../classes/question.php');
+	
 	/**
 	* Class which executes common actions for Question class
 	*/
 	class QuestionActions
 	{
-
 		/**
 		 * Save a question in DB : construct the object and executes the insert or update method
 		 * @param  int  	$id           id of the question
@@ -28,4 +28,26 @@
 			return $response;
 		}
 
+		public static function repeaterQuestion($id,$label,$answer, $returnsArray = false)
+
+		{
+			$question = new Question($id, $label, $answer);
+			if ($question->getQuestion == false) {
+				echo 'il y a rien';
+			}else{
+				foreach ($question as $key => $value) {
+					$tableauQuestion = $question->getQuestion();
+					$tableauQuestion++;
+						
+				}
+			}
+
+			var_dump($tableauQuestion);
+
+		}
+		
 	}
+
+	$test = new QuestionActions;
+	$test-> repeaterQuestion($id,$label,$answer);
+	var_dump($test);
