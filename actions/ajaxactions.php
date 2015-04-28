@@ -93,7 +93,7 @@
 		{
 			array_push($this->args, true); // Adding true forces the method to return an array
 			$response = call_user_func_array($this->class.'::'.$this->method, $this->args);
-			if ($response) {
+			if ($response || is_array($response)) { // Methods can sometimes return empty array (autocomplete method). It's not a bug, it's a feature
 				return json_encode($response);
 			}else{
 				$response = array(

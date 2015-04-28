@@ -22,16 +22,19 @@
 			<div class="row">
 				<div class="small-12 columns">
 					<div class="row collapse">
-						<div class="small-10 columns">
-							<input type="text" placeholder="Enter a tag name...">
+						<div class="small-10 columns" id="autocompleteInputTag">
+							<input type="text" id="questionTagInput" placeholder="Enter a tag name...">
 						</div>
 						<div class="small-2 columns">
-							<a href="#" class="button postfix">Add</a>
+							<a href="" id="addTagButton" class="button postfix">Add</a>
 						</div>
 					</div>
 				</div>
 				<div class="small-12 column">
 					<h4>Current tags</h4>
+					<div id="tagsList">
+
+					</div>
 				</div>
 			</div>
 		</div>

@@ -26,7 +26,7 @@
 		 */
 		protected $numberOfQuestions;
 
-		function __construct($id, $label, $numberOfQuestions = 0)
+		function __construct($id = 0, $label = 'Not initialized', $numberOfQuestions = 0)
 		{
 			$this->id = $id;
 			$label = (!is_array($label)) ?  array('en_EN' => $label) : $label ;
@@ -76,6 +76,9 @@
 		 */
 		public function getLabel($lang = 'en_EN')
 		{
+			if (!is_array($this->label)) {
+				$this->label = array('en_EN' => $this->label);
+			}
 			$label = (array_key_exists($lang, $this->getLabelArray())) ? $this->label[$lang] : $this->label['en_EN'] ;
 			return $label;
 		}
@@ -127,4 +130,35 @@
 
 			return $this;
 		}
-}
+
+		/**
+		 * Returns all args into an array, except $excludeArgs
+		 * @param  array  $renameArgs 	Array of args to ignore
+		 * @param  array  $excludeArgs 	Array of args to ignore
+		 * @return array               	Plain array of the object args
+		 */
+		public function serialize($renameArgs= array('id' => 'pkTag'), $excludeArgs = array('numberOfQuestions'))
+		{
+			$response = array();
+			$args = get_class_vars(get_class($this));
+			$argsName = array_keys($args);
+			$argsName = array_diff($argsName, $excludeArgs);
+			foreach ($argsName as $name) {
+				if (is_array($this->$name)) {
+					foreach ($this->$name as $lang => $value) {
+						$response[$name.'_'.substr($lang, 0, 2)] = $value;
+					}
+				} else {
+					$response[$name] = $this->$name;
+				}
+			}
+			foreach ($renameArgs as $oldKey => $newKey) {
+				if (array_key_exists($oldKey, $response)) {
+					$response[$newKey] = $response[$oldKey];
+					unset($response[$oldKey]);
+				}
+			}
+			return $response;
+		}
+
+	}

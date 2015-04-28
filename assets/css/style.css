@@ -23,6 +23,7 @@ h3{
 	background-color: #008cba;
 	color: white;
 	padding-left: 10px;
+	cursor: pointer;
 }
 
 .switch label{
@@ -50,6 +51,39 @@ h3{
 	display: inline-block;
 }
 
-.alert h6{
+.alert-box h6{
 	color: white;
+}
+
+.tagElement{
+	margin: 5px;
+}
+
+.tagElement.alert{
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#autocompleteInputTag ul{
+	width: 100%;
+	list-style-type: none;
+	border: 1px solid #CDDCE0;
+	position: absolute;
+	z-index: 1000;
+	background: white;
+}
+
+#autocompleteInputTag li{
+	cursor: pointer;
+	padding: 10px;
+	padding-left: 15px;
+}
+
+#autocompleteInputTag li.ui-state-focus{
+	background-color: #008cba;
+	color: white;
+}
+
+.hidden{
+	visibility: hidden;
 }
