@@ -1,6 +1,9 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors',1);
 
 	class DatabaseConnection{
+
 
 		/**
 		 * DB ressource
@@ -15,9 +18,9 @@
 		protected $statement;
 
 		function __construct(){
-			$dsn = "mysql:host=localhost;dbname=luceofaq";
+			$dsn = "mysql:host=127.0.0.1:8889;dbname=luceofaq";
 			$user = "root";
-			$pass = "";
+			$pass = "root";
 			try {
 				$this->connection = new PDO($dsn, $user, $pass);
 			}catch(PDOException $e){
@@ -103,6 +106,13 @@
 		 * Returns the last inserted Id in the DB
 		 * @return int id
 		 */
+        public function execSQL($sql, $returnsObject = false)
+        {
+            $this->statement = $this->connection->query($sql);
+            $result = ($returnsObject) ? $this->statement->fetchAll(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, $returnsObject) : $this->statement->fetchAll(PDO::FETCH_ASSOC) ;
+            return $result;
+        }
+
 		public function getInsertId()
 		{
 			return $this->connection->lastInsertId();

@@ -50,6 +50,17 @@
 		}
 
 		/**
+		 * Gets all the tags
+		 * @return array  Array of Tag objects
+		 */
+		public static function getQuestionList()
+		{
+			return self::$_db->execSQL('SELECT q.pkQuestion AS id, q.question_en AS question, q.answer_en AS answer, COUNT(*) AS numberOfQuestions FROM questions q LEFT JOIN questions_tags qt ON q.pkQuestion = qt.pkQuestion GROUP BY id, question ORDER BY question','Question');
+		}
+
+
+
+		/**
 		 * Update a question in DB
 		 * @param  Question 	$question     Question update
 		 * @param  boolean  	$returnsArray True if we want an array as return (AJAX purpose) instead of a boolean

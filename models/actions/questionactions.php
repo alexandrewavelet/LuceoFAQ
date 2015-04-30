@@ -1,5 +1,4 @@
 <?php
-		require_once('../classes/question.php');
 	
 	/**
 	* Class which executes common actions for Question class
@@ -28,26 +27,13 @@
 			return $response;
 		}
 
-		public static function repeaterQuestion($id,$label,$answer, $returnsArray = false)
-
+		public static function getQuestionList()
 		{
-			$question = new Question($id, $label, $answer);
-			if ($question->getQuestion == false) {
-				echo 'il y a rien';
-			}else{
-				foreach ($question as $key => $value) {
-					$tableauQuestion = $question->getQuestion();
-					$tableauQuestion++;
-						
-				}
-			}
+			$QuestionArray = QuestionsDA::getQuestionList();
 
-			var_dump($tableauQuestion);
-
+			return $QuestionArray;
 		}
+
+		
 		
 	}
-
-	$test = new QuestionActions;
-	$test-> repeaterQuestion($id,$label,$answer);
-	var_dump($test);

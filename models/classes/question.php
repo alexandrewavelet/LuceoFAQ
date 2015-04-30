@@ -41,7 +41,7 @@
 		 */
 		protected $tags;
 
-		function __construct($id, $question, $answer)
+		function __construct($id = 0, $question = "Not Initialized", $answer ="Not Initialized")
 		{
 			$this->id = $id;
 			$question = (!is_array($question)) ?  array('en_EN' => $question) : $question ;
@@ -93,8 +93,12 @@
 		 */
 		public function getQuestion($lang = 'en_EN')
 		{
-			$question = (array_key_exists($lang, $this->getQuestionArray())) ? $this->question[$lang] : $this->question['en_EN'] ;
-			return $question;
+
+            if (!is_array($this->question)) {
+                $this->question = array('en_EN' => $this->question);
+            }
+            $question = (array_key_exists($lang, $this->getQuestionArray())) ? $this->question[$lang] : $this->question['en_EN'] ;
+            return $question;
 		}
 
 		/**
@@ -138,9 +142,14 @@
 		 */
 		public function getAnswer($lang = 'en_EN')
 		{
-			$answer = (array_key_exists($lang, $this->getAnswerArray())) ? $this->answer[$lang] : $this->answer['en_EN'] ;
-			return $answer;
-		}
+            if (!is_array($this->answer)) {
+                $this->answer = array('en_EN' => $this->answer);
+            }
+            $answer = (array_key_exists($lang, $this->getAnswerArray())) ? $this->answer[$lang] : $this->answer['en_EN'] ;
+            return $answer;
+        }
+
+
 
 		/**
 		 * Sets the answer (En and Fr).

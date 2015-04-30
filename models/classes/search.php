@@ -6,8 +6,8 @@
 	class Search
 	{
 
-		protected $query
-		protected $tags
+		protected $query;
+		protected $tags;
 
 		function __construct($query = '', $tags = array())
 		{
