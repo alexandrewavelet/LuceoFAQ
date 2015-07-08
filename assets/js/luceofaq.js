@@ -25,6 +25,10 @@ $(function()
 	// We initialze the events when the "add question" modal is open
 	$(document).on('opened.fndtn.reveal', '[data-reveal]', initModalQuestion);
 
+	$('#searchQuestionInput').keyup(function(event) {
+		searchQuestions();
+	});;
+
 });
 
 /**
@@ -109,7 +113,7 @@ function addTagQuestion(){
 	var tagNode = $('#questionTagInput');
 	if (tagNode.val() == '') { return false; };
 	if (tagNode.val().length > 20) {
-		addErrorMessage('Tag lenght can\'t be more than 20 characters', '#addQuestion');
+		addErrorMessage('Tag length can\'t be more than 20 characters', '#addQuestion');
 		tagNode.val('');
 		return false;
 	};
@@ -248,6 +252,20 @@ function afterQuestionAdded(ajaxResponse)
 	addSuccessMessage(ajaxResponse.message, '#alertPanePage');
 	$('#addQuestion').foundation('reveal', 'close');
 	$('#tagSearchlist').load('views/search/tagsList.php');
+	$('#questionList').load('views/questions/list.php');
+}
+
+function searchQuestions()
+{
+	var term = $('#searchQuestionInput').val();
+	var params = {}
+	if (term.length > 0) {
+		params = {
+			searchTerm : term
+		};
+	};
+
+	$('#questionList').load('views/questions/list.php', params);
 }
 
 /**

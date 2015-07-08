@@ -2,7 +2,8 @@
 
 	require_once(dirname(dirname(__DIR__)) . '/models/autoload.php');
 
-	$questionList = QuestionActions::getQuestionList();
+	$term = (isset($_POST['searchTerm'])) ? $_POST['searchTerm'] : false ;
+	$questionList = QuestionActions::getQuestionList($term);
 
 	foreach ($questionList as $question) {
 		?>

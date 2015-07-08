@@ -35,6 +35,7 @@ This current version will contain questions, tags and search.
 * ~~Autocompletion tag field in the modal~~
 * ~~Insert number of tagged questions in the tag panel~~
 * ~~Delete tags from question (DB)~~
+* ~~List all questions on homepage~~
 
 ## Improvements
 Add more functionnalities : Login/signup, member area, most recent searches, predictive search, Add question without answer for other people to answer ("knowledge request"), ...

@@ -19,7 +19,7 @@
 			<div class="large-12 columns">
 				<div class="row collapse">
 					<div class="small-10 columns">
-						<input type="text" placeholder="Type your question here...">
+						<input type="text" id="searchQuestionInput" placeholder="Type your question here...">
 					</div>
 					<div class="small-2 columns">
 						<a href="#" class="button postfix">Go</a>
@@ -48,7 +48,6 @@
 	</div>
 
 	<div class="row luceofaq-content" id="questionList">
-		<!-- Question list goes there -->
 		<?php require 'views/questions/list.php'; ?>
 	</div>
 

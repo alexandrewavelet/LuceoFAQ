@@ -13,6 +13,9 @@
 		 */
 		public static function getObjectsTagFromArray($tagsArray)
 		{
+			if (!is_array($tagsArray)) {
+				return array();
+			}
 			$tagsObjects = array();
 			foreach ($tagsArray as $tag) {
 				array_push($tagsObjects, new Tag(TagsDA::getTagID($tag['name']), $tag['name']));
