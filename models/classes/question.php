@@ -41,14 +41,14 @@
 		 */
 		protected $tags;
 
-		function __construct($id, $question, $answer)
+		function __construct($id = 0, $question = '', $answer = '', $wikiURL = '')
 		{
 			$this->id = $id;
 			$question = (!is_array($question)) ?  array('en_EN' => $question) : $question ;
 			$this->question = $question;
 			$answer = (!is_array($answer)) ?  array('en_EN' => $answer) : $answer ;
 			$this->answer = $answer;
-			$this->wikiURL = '';
+			$this->wikiURL = $wikiURL;
 
 			return $this;
 		}
@@ -93,6 +93,9 @@
 		 */
 		public function getQuestion($lang = 'en_EN')
 		{
+			if (!is_array($this->question)) {
+				$this->question = array('en_EN' => $this->question);
+			}
 			$question = (array_key_exists($lang, $this->getQuestionArray())) ? $this->question[$lang] : $this->question['en_EN'] ;
 			return $question;
 		}
@@ -138,6 +141,9 @@
 		 */
 		public function getAnswer($lang = 'en_EN')
 		{
+			if (!is_array($this->answer)) {
+				$this->answer = array('en_EN' => $this->answer);
+			}
 			$answer = (array_key_exists($lang, $this->getAnswerArray())) ? $this->answer[$lang] : $this->answer['en_EN'] ;
 			return $answer;
 		}

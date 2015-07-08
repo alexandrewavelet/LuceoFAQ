@@ -73,6 +73,11 @@
 			return self::$_db->execSQL('SELECT t.label_en AS label FROM tags t WHERE t.label_en LIKE "%'.$term.'%" ORDER BY label');
 		}
 
+		public static function getTagsQuestion($idQuestion)
+		{
+			return self::$_db->execSQL('SELECT t.pkTag AS id, t.label_en AS label FROM tags t LEFT JOIN questions_tags qt ON t.pkTag = qt.pkTag WHERE qt.pkQuestion = '.$idQuestion.' ORDER BY label', 'Tag');
+		}
+
 	}
 
 	TagsDA::init();

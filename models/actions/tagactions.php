@@ -27,9 +27,12 @@
 		 */
 		public static function getTagsList()
 		{
-			$tagsArray = TagsDA::getTagsList();
+			return TagsDA::getTagsList();
+		}
 
-			return $tagsArray;
+		public static function getTagsQuestion($idQuestion)
+		{
+			return TagsDA::getTagsQuestion($idQuestion);
 		}
 
 		/**

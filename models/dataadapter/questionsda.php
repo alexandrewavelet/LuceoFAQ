@@ -108,6 +108,11 @@
 			return self::$_db->executeStatement();
 		}
 
+		public static function getQuestionList()
+		{
+			return self::$_db->execSQL('SELECT q.pkQuestion AS id, q.question_en AS question, q.answer_en AS answer, q.wiki_url AS wikiURL FROM questions q ORDER BY id DESC', 'Question');
+		}
+
 	}
 
 	QuestionsDA::init();

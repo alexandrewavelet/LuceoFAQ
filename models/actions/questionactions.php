@@ -64,4 +64,14 @@
 			return array('error' => 1, 'message' => $message);
 		}
 
+		public static function getQuestionList()
+		{
+			$questions = QuestionsDA::getQuestionList();
+			foreach ($questions as &$question) {
+				$question->setTags(TagActions::getTagsQuestion($question->getId()));
+			}
+
+			return $questions;
+		}
+
 	}
