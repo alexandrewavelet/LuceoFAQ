@@ -108,6 +108,25 @@
 			return self::$_db->executeStatement();
 		}
 
+		public static function getQuestionList($term)
+		{
+			$sql = 'SELECT q.pkQuestion AS id, q.question_en AS question, q.answer_en AS answer, q.wiki_url AS wikiURL FROM questions q ';
+			if ($term) {
+				$words = explode(' ', $term);
+				$operand = 'WHERE';
+				foreach ($words as $word) {
+					$sql .= $operand.' q.question_en LIKE "%'.$word.'%" ';
+					$sql .= 'OR q.question_fr LIKE "%'.$word.'%" ';
+					$sql .= 'OR q.answer_en LIKE "%'.$word.'%" ';
+					$sql .= 'OR q.answer_fr LIKE "%'.$word.'%" ';
+					$operand = 'OR';
+				}
+			}
+			$sql .= 'ORDER BY id DESC';
+
+			return self::$_db->execSQL($sql, 'Question');
+		}
+
 	}
 
 	QuestionsDA::init();

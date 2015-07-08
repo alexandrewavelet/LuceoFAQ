@@ -13,6 +13,9 @@
 		 */
 		public static function getObjectsTagFromArray($tagsArray)
 		{
+			if (!is_array($tagsArray)) {
+				return array();
+			}
 			$tagsObjects = array();
 			foreach ($tagsArray as $tag) {
 				array_push($tagsObjects, new Tag(TagsDA::getTagID($tag['name']), $tag['name']));
@@ -27,9 +30,12 @@
 		 */
 		public static function getTagsList()
 		{
-			$tagsArray = TagsDA::getTagsList();
+			return TagsDA::getTagsList();
+		}
 
-			return $tagsArray;
+		public static function getTagsQuestion($idQuestion)
+		{
+			return TagsDA::getTagsQuestion($idQuestion);
 		}
 
 		/**

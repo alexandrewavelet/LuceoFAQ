@@ -14,7 +14,7 @@
 		 * @param  boolean 	$returnsArray True if we want an array as return (AJAX purpose) instead of a boolean
 		 * @return mixed   	$response     Array with message or true/false
 		 */
-		public static function saveQuestion($id, $label, $answer, $tagsArray, $returnsArray = false)
+		public static function saveQuestion($id, $label, $answer, $tagsArray, $returnsArray = true)
 		{
 			$question = new Question($id, $label, $answer);
 			if ($question->getId() == 0) {
@@ -62,6 +62,16 @@
 			$message .= '</ul>';
 
 			return array('error' => 1, 'message' => $message);
+		}
+
+		public static function getQuestionList($term = false)
+		{
+			$questions = QuestionsDA::getQuestionList($term);
+			foreach ($questions as &$question) {
+				$question->setTags(TagActions::getTagsQuestion($question->getId()));
+			}
+
+			return $questions;
 		}
 
 	}
